@@ -1,0 +1,99 @@
+/* Global styles for GreenThumb app */
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fbe7;
+  color: #2c3e50;
+}
+
+h1, h2, h3 {
+  color: #2e7d32;
+}
+
+.container {
+  max-width: 960px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+  margin-bottom: 40px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #388e3c;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  border-radius: 4px;
+  border: 1px solid #4caf50;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+input[type="date"] {
+  padding: 6px 12px;
+}
+
+.reminder-item, .plant-card {
+  border: 1px solid #4caf50;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background-color: #e8f5e9;
+}
+
+.reminder-item h3, .plant-card h3 {
+  margin: 0 0 8px 0;
+  color: #2e7d32;
+}
+
+.reminder-item p, .plant-card p {
+  margin: 0 0 4px 0;
+  color: #4caf50;
+}
+
+.navbar {
+  background-color: #4caf50;
+  padding: 10px 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.navbar a.active {
+  text-decoration: underline;
+}
+
+.error-message {
+  color: #d32f2f;
+  margin-bottom: 12px;
+}
+
+.success-message {
+  color: #388e3c;
+  margin-bottom: 12px;
+}
