@@ -1,46 +1,80 @@
 import React, { useState, useEffect } from 'react';
 import ReminderList from '../components/reminders/ReminderList';
 import ReminderForm from '../components/reminders/ReminderForm';
+import { getReminders, addReminder, updateReminder, deleteReminder } from '../components/services/reminders';
 
 const RemindersPage = () => {
-  const [reminders, setReminders] = useState(() => {
-    const saved = localStorage.getItem('reminders');
-    return saved ? JSON.parse(saved) : [
-      {
-        id: 1,
-        title: 'Water the plants',
-        description: 'Remember to water the plants every morning.',
-        date: '2024-06-01',
-      },
-      {
-        id: 2,
-        title: 'Fertilize garden',
-        description: 'Apply fertilizer to the garden this weekend.',
-        date: '2024-06-05',
-      },
-    ];
-  });
+  const [reminders, setReminders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    localStorage.setItem('reminders', JSON.stringify(reminders));
-  }, [reminders]);
+    const fetchReminders = async () => {
+      try {
+        const data = await getReminders();
+        setReminders(data);
+      } catch (err) {
+        setError('Failed to load reminders');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReminders();
+  }, []);
 
-  const addReminder = (reminder) => {
-    setReminders((prevReminders) => [
-      ...prevReminders,
-      { ...reminder, id: prevReminders.length + 1 },
-    ]);
+  const handleAddReminder = async (reminder) => {
+    try {
+      const newReminder = await addReminder(reminder);
+      setReminders((prevReminders) => [...prevReminders, { ...reminder, id: newReminder.id }]);
+    } catch (err) {
+      setError('Failed to add reminder');
+    }
   };
 
-  const deleteReminder = (id) => {
-    setReminders((prevReminders) => prevReminders.filter(r => r.id !== id));
+  const handleUpdateReminder = async (id, updatedData) => {
+    try {
+      await updateReminder(id, updatedData);
+      setReminders((prevReminders) =>
+        prevReminders.map((r) => (r.id === id ? { ...r, ...updatedData } : r))
+      );
+    } catch (err) {
+      setError('Failed to update reminder');
+    }
   };
+
+  const handleDeleteReminder = async (id) => {
+    try {
+      await deleteReminder(id);
+      setReminders((prevReminders) => prevReminders.filter((r) => r.id !== id));
+    } catch (err) {
+      setError('Failed to delete reminder');
+    }
+  };
+
+  const handleCompleteReminder = async (id) => {
+    try {
+      await deleteReminder(id);
+      setReminders((prevReminders) => prevReminders.filter((r) => r.id !== id));
+    } catch (err) {
+      setError('Failed to complete reminder');
+    }
+  };
+
+  if (loading) {
+    return <p>Loading reminders...</p>;
+  }
 
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>Reminders</h1>
-      <ReminderForm addReminder={addReminder} />
-      <ReminderList reminders={reminders} deleteReminder={deleteReminder} />
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <ReminderForm addReminder={handleAddReminder} />
+      <ReminderList
+        reminders={reminders}
+        deleteReminder={handleDeleteReminder}
+        updateReminder={handleUpdateReminder}
+        completeReminder={handleCompleteReminder}
+      />
     </div>
   );
 };

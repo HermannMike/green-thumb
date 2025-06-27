@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-const ReminderForm = ({ addReminder }) => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [date, setDate] = useState('');
+const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => {
+  const [title, setTitle] = useState(initialData.title || '');
+  const [description, setDescription] = useState(initialData.description || '');
+  const [date, setDate] = useState(initialData.date || '');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -19,16 +19,20 @@ const ReminderForm = ({ addReminder }) => {
       setError('Date is required');
       return;
     }
-    addReminder({ title, description, date });
-    setTitle('');
-    setDescription('');
-    setDate('');
-    setSuccess('Reminder added successfully!');
+    if (onSubmit) {
+      onSubmit({ title, description, date });
+    } else {
+      addReminder({ title, description, date });
+      setTitle('');
+      setDescription('');
+      setDate('');
+      setSuccess('Reminder added successfully!');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Add Reminder</h2>
+      <h2>{onSubmit ? 'Edit Reminder' : 'Add Reminder'}</h2>
       {error && <div style={styles.error}>{error}</div>}
       {success && <div style={styles.success}>{success}</div>}
       <input
@@ -50,7 +54,14 @@ const ReminderForm = ({ addReminder }) => {
         onChange={(e) => setDate(e.target.value)}
         style={styles.input}
       />
-      <button type="submit" style={styles.button}>Add Reminder</button>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <button type="submit" style={styles.button}>{onSubmit ? 'Update Reminder' : 'Add Reminder'}</button>
+        {onSubmit && (
+          <button type="button" onClick={onCancel} style={{ ...styles.button, backgroundColor: '#d32f2f' }}>
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };

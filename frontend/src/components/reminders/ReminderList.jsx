@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReminderItem from './ReminderItem';
+import ReminderForm from './ReminderForm';
 
-const ReminderList = ({ reminders, deleteReminder }) => {
+const ReminderList = ({ reminders, deleteReminder, updateReminder, completeReminder }) => {
+  const [editingId, setEditingId] = useState(null);
+
+  const handleEdit = (reminder) => {
+    setEditingId(reminder.id);
+  };
+
+  const handleCancel = () => {
+    setEditingId(null);
+  };
+
+  const handleUpdate = (updatedData) => {
+    updateReminder(editingId, updatedData);
+    setEditingId(null);
+  };
+
+  const handleComplete = (id) => {
+    completeReminder(id);
+  };
+
   return (
     <div>
       <h2>Reminder List</h2>
@@ -10,13 +30,23 @@ const ReminderList = ({ reminders, deleteReminder }) => {
       ) : (
         reminders.map((reminder) => (
           <div key={reminder.id} style={styles.reminderContainer}>
-            <ReminderItem reminder={reminder} />
-            <button
-              onClick={() => deleteReminder(reminder.id)}
-              style={styles.deleteButton}
-            >
-              Delete
-            </button>
+            {editingId === reminder.id ? (
+              <ReminderForm
+                initialData={reminder}
+                onSubmit={handleUpdate}
+                onCancel={handleCancel}
+              />
+            ) : (
+              <>
+                <ReminderItem reminder={reminder} onEdit={handleEdit} onComplete={handleComplete} />
+                <button
+                  onClick={() => deleteReminder(reminder.id)}
+                  style={styles.deleteButton}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         ))
       )}
