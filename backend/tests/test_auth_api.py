@@ -1,8 +1,24 @@
 import pytest
 import json
-from app.main import create_app, db
+import sys
+import os
 
-app = create_app('testing')
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app.main import create_app
+from app import db
+
+class TestConfig:
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    JWT_SECRET_KEY = "test-secret-key"
+
+class TestConfig:
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///:memory:"
+    JWT_SECRET_KEY = "test-secret-key"
+
+app = create_app(TestConfig)
 
 @pytest.fixture
 def client():

@@ -4,15 +4,17 @@ describe('Green Thumb App Flow', () => {
   });
 
   it('allows user to register, login, and manage reminders', () => {
+    // Click the "Sign Up" link in the navbar
+    cy.contains('Sign Up').click();
+
     // Register new user
-    cy.contains('Register').click();
-    cy.get('input[name="username"]').type('testuser');
-    cy.get('input[name="password"]').type('testpassword');
+    cy.get('input[placeholder="Choose a username"]').type('testuser');
+    cy.get('input[placeholder="Create a password"]').type('testpassword');
     cy.get('button[type="submit"]').click();
 
     // Login
-    cy.get('input[name="username"]').type('testuser');
-    cy.get('input[name="password"]').type('testpassword');
+    cy.get('input[value=""]').eq(0).type('testuser');
+    cy.get('input[value=""]').eq(1).type('testpassword');
     cy.get('button[type="submit"]').click();
 
     // Check home page loaded

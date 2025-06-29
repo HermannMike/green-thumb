@@ -29,6 +29,7 @@ def add_reminder():
     reminder = Reminder(
         task=data['task'],
         due_date=datetime.fromisoformat(data['due_date']),
+        plant_id=plant.id,
         plant_name=plant.name
     )
     db.session.add(reminder)

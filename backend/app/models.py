@@ -31,4 +31,5 @@ class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)
     due_date = db.Column(db.DateTime, nullable=False)
+    plant_id = db.Column(db.Integer, db.ForeignKey('plant.id'), nullable=False)
     plant_name = db.Column(db.String(120), nullable=False)

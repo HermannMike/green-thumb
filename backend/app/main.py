@@ -24,10 +24,10 @@ def create_app(config_object=None):
 
     jwt = JWTManager(app)
 
-    from backend.app.routes.reminders import reminders_bp
+    from .routes.reminders import reminders_bp
     app.register_blueprint(reminders_bp, url_prefix='/api/reminders')
 
-    from backend.app.routes.auth import auth_bp
+    from .routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
     @app.route('/')

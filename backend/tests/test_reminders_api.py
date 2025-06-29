@@ -1,9 +1,11 @@
 import pytest
 import sys
 import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../backend')))
 
-from app.main import create_app, db
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from app.main import create_app
+from app import db
 from app.models import Reminder, User
 from flask import json
 
@@ -50,7 +52,8 @@ def test_create_reminder(client, user, app):
         data = {
             "task": "Test Reminder",
             "due_date": datetime(2024, 12, 31, 23, 59, 59).isoformat(),
-            "plant_id": plant.id
+            "plant_id": plant.id,
+            "plant_name": plant.name
         }
         response = client.post("/api/reminders", json=data, headers={"Authorization": f"Bearer {token}"})
         assert response.status_code == 201
@@ -65,7 +68,7 @@ def test_get_reminders(client, user, app):
         plant = Plant(name="Test Plant", user_id=user.id)
         db.session.add(plant)
         db.session.commit()
-        reminder = Reminder(task="Reminder 1", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id)
+        reminder = Reminder(task="Reminder 1", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id, plant_name=plant.name)
         db.session.add(reminder)
         db.session.commit()
 
@@ -82,7 +85,7 @@ def test_update_reminder(client, user, app):
         plant = Plant(name="Test Plant", user_id=user.id)
         db.session.add(plant)
         db.session.commit()
-        reminder = Reminder(task="Old Title", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id)
+        reminder = Reminder(task="Old Title", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id, plant_name=plant.name)
         db.session.add(reminder)
         db.session.commit()
 
@@ -103,7 +106,7 @@ def test_delete_reminder(client, user, app):
         plant = Plant(name="Test Plant", user_id=user.id)
         db.session.add(plant)
         db.session.commit()
-        reminder = Reminder(task="To Delete", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id)
+        reminder = Reminder(task="To Delete", due_date=datetime(2024, 12, 31, 23, 59, 59), plant_id=plant.id, plant_name=plant.name)
         db.session.add(reminder)
         db.session.commit()
 
