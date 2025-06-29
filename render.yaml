@@ -4,11 +4,11 @@ services:
     runtime: python
     buildCommand: pip install -r backend/requirements.txt
     startCommand: python backend/run.py
-    autoDeploy: true
     envVars:
       - key: FLASK_ENV
         value: production
       # Add other environment variables here as needed
+    autoDeploy: true
 
   - type: web
     name: green-thumb-frontend
@@ -17,5 +17,5 @@ services:
       cd frontend
       npm install
       npm run build
-    startCommand: serve -s build
+    startCommand: npx serve -s build
     autoDeploy: true
