@@ -7,7 +7,14 @@ auth_bp = Blueprint('auth', __name__)
 def register_user():
     try:
         data = request.get_json()
-        token, err = register(data['username'], data['password'])
+
+        email = data.get('email') or data.get('username')  # support both
+        password = data.get('password')
+
+        if not email or not password:
+            return jsonify({'error': 'Missing email or password'}), 400
+
+        token, err = register(email, password)
         if err:
             return jsonify({'error': err}), 400
         return jsonify({'access_token': token}), 201
@@ -21,7 +28,15 @@ def register_user():
 def login_user():
     try:
         data = request.get_json()
-        token, err = login(data['username'], data['password'])
+
+        # ✅ Accept either email or username for login
+        identifier = data.get('email') or data.get('username')
+        password = data.get('password')
+
+        if not identifier or not password:
+            return jsonify({'error': 'Missing email/username or password'}), 400
+
+        token, err = login(identifier, password)
         if err:
             return jsonify({'error': err}), 401
         return jsonify({'access_token': token}), 200

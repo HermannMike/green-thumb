@@ -14,7 +14,7 @@ def create_app(config_object=None):
     if config_object:
         app.config.from_object(config_object)
     else:
-        app.config.from_object('backend.app.config.Config')
+        app.config.from_object('app.config.Config')
 
     # Disable strict slashes to allow routes with or without trailing slash
     app.url_map.strict_slashes = False
@@ -24,10 +24,10 @@ def create_app(config_object=None):
 
     jwt = JWTManager(app)
 
-    from backend.app.routes.reminders import reminders_bp
+    from app.routes.reminders import reminders_bp
     app.register_blueprint(reminders_bp, url_prefix='/api/reminders')
 
-    from backend.app.routes.auth import auth_bp
+    from app.routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
     @app.route('/')
