@@ -1,11 +1,11 @@
 # models.py
-from backend.app import db
+from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
+    password_hash = db.Column(db.String(512), nullable=False)
 
     plants = db.relationship('Plant', backref='user', lazy=True)
 
@@ -31,4 +31,4 @@ class Reminder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     task = db.Column(db.String(255), nullable=False)
     due_date = db.Column(db.DateTime, nullable=False)
-    plant_id = db.Column(db.Integer, db.ForeignKey('plant.id'), nullable=False)
+    plant_name = db.Column(db.String(120), nullable=False)

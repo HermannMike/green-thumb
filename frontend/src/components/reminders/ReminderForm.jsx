@@ -7,8 +7,9 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
   const [plant_id, setPlantId] = useState(initialData.plant_id || '');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [plant_name, setPlantName] = useState(initialData.plant_name || '');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
@@ -20,19 +21,29 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
       setError('Due date is required');
       return;
     }
-    if (!plant_id) {
-      setError('Plant ID is required');
+    if (!plant_name) {
+      setError('Plant name is required');
       return;
     }
-    if (onSubmit) {
-      onSubmit({ task, due_date, plant_id });
-    } else {
-      addReminder({ task, due_date, plant_id });
-      setTask('');
-      setDescription('');
-      setDueDate('');
-      setPlantId('');
-      setSuccess('Reminder added successfully!');
+    
+    try {
+      // Convert datetime-local format to ISO format for backend
+      const formattedDate = new Date(due_date).toISOString();
+      const reminderData = { task, due_date: formattedDate, plant_name: plant_name };
+      
+      if (onSubmit) {
+        onSubmit(reminderData);
+      } else {
+        await addReminder(reminderData);
+        setTask('');
+        setDescription('');
+        setDueDate('');
+        setPlantName('');
+        setSuccess('Reminder added successfully!');
+      }
+    } catch (error) {
+      console.error('Error adding reminder:', error);
+      setError('Failed to add reminder. Please try again.');
     }
   };
 
@@ -61,10 +72,10 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
         style={styles.input}
       />
       <input
-        type="number"
-        placeholder="Plant ID"
-        value={plant_id}
-        onChange={(e) => setPlantId(e.target.value)}
+        type="text"
+        placeholder="Plant Name"
+        value={plant_name}
+        onChange={(e) => setPlantName(e.target.value)}
         style={styles.input}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>
