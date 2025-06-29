@@ -10,6 +10,7 @@ const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await loginUser(username, password);
     if (response.access_token) {
+      localStorage.setItem('token', response.access_token);
       setMessage('Login successful');
     } else {
       setMessage(response.message || 'Login failed');

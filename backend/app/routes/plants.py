@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.main import db
-from ..models.plant import Plant
+from app import db
+from app.models import Plant
 
 plants_bp = Blueprint('plants', __name__)
 
-@plants_bp.route('', methods=['GET'])
+@plants_bp.route('/', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def get_plants():
     user_id = get_jwt_identity()
@@ -17,7 +17,7 @@ def get_plants():
         'image_url': p.image_url
     } for p in plants])
 
-@plants_bp.route('', methods=['POST'])
+@plants_bp.route('/', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def add_plant():
     data = request.get_json()
@@ -31,30 +31,35 @@ def add_plant():
     db.session.commit()
     return jsonify({'id': plant.id}), 201
 
-@plants_bp.route('/<int:id>', methods=['GET', 'PUT', 'DELETE'])
+@plants_bp.route('/<int:id>', methods=['GET'])
 @jwt_required()
-def handle_plant(id):
+def get_plant(id):
     user_id = get_jwt_identity()
     plant = Plant.query.filter_by(id=id, user_id=user_id).first_or_404()
+    return jsonify({
+        'id': plant.id,
+        'name': plant.name,
+        'description': plant.description,
+        'image_url': plant.image_url
+    })
 
-    if request.method == 'GET':
-        return jsonify({
-            'id': plant.id,
-            'name': plant.name,
-            'description': plant.description,
-            'image_url': plant.image_url
-        })
-
+@plants_bp.route('/<int:id>', methods=['PUT'])
+@jwt_required()
+def update_plant(id):
+    user_id = get_jwt_identity()
+    plant = Plant.query.filter_by(id=id, user_id=user_id).first_or_404()
     data = request.get_json()
+    plant.name = data['name']
+    plant.description = data.get('description')
+    plant.image_url = data.get('image_url')
+    db.session.commit()
+    return jsonify({'message': 'Plant updated'})
 
-    if request.method == 'PUT':
-        plant.name = data['name']
-        plant.description = data.get('description')
-        plant.image_url = data.get('image_url')
-        db.session.commit()
-        return jsonify({'message': 'Plant updated'})
-
-    if request.method == 'DELETE':
-        db.session.delete(plant)
-        db.session.commit()
-        return jsonify({'message': 'Plant deleted'})
+@plants_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_plant(id):
+    user_id = get_jwt_identity()
+    plant = Plant.query.filter_by(id=id, user_id=user_id).first_or_404()
+    db.session.delete(plant)
+    db.session.commit()
+    return jsonify({'message': 'Plant deleted'})

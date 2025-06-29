@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ReminderItem = ({ reminder, onEdit, onComplete }) => {
-  const { title, description, date } = reminder;
+  const { task, due_date, plant_name, plant_image_url } = reminder;
 
   return (
     <div style={styles.container}>
@@ -11,10 +11,15 @@ const ReminderItem = ({ reminder, onEdit, onComplete }) => {
         style={styles.checkbox}
         aria-label="Mark reminder as completed"
       />
-      <div>
-        <h3 style={styles.title}>{title}</h3>
-        <p style={styles.description}>{description}</p>
-        <p style={styles.date}>{date}</p>
+      <img
+        src={plant_image_url || 'https://via.placeholder.com/60'}
+        alt={plant_name || 'Plant'}
+        style={styles.image}
+      />
+      <div style={styles.textContainer}>
+        <h3 style={styles.title}>{task}</h3>
+        <p style={styles.plantName}>{plant_name}</p>
+        <p style={styles.date}>{new Date(due_date).toLocaleString()}</p>
       </div>
       <button onClick={() => onEdit(reminder)} style={styles.editButton}>Edit</button>
     </div>
@@ -39,13 +44,24 @@ const styles = {
     height: '18px',
     cursor: 'pointer',
   },
+  image: {
+    width: '60px',
+    height: '60px',
+    borderRadius: '8px',
+    objectFit: 'cover',
+    marginRight: '12px',
+  },
+  textContainer: {
+    flex: 1,
+  },
   title: {
     margin: '0 0 6px 0',
     color: '#2e7d32',
   },
-  description: {
+  plantName: {
     margin: '0 0 6px 0',
-    color: '#4caf50',
+    color: '#388e3c',
+    fontWeight: 'bold',
   },
   date: {
     margin: 0,

@@ -6,12 +6,16 @@ const RegisterForm = () => {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await registerUser(username, password);
       if (response.error) {
         setMessage(`Error: ${response.error}`);
+      } else if (response.access_token) {
+        localStorage.setItem('token', response.access_token);
+        setMessage('Registration successful!');
+        // Optionally, redirect or update UI to logged-in state here
       } else if (response.message) {
         setMessage(response.message);
       } else {

@@ -27,7 +27,8 @@ const RemindersPage = () => {
       const newReminder = await addReminder(reminder);
       setReminders((prevReminders) => [...prevReminders, { ...reminder, id: newReminder.id }]);
     } catch (err) {
-      setError('Failed to add reminder');
+      console.error('Add reminder error:', err);
+      setError('Failed to add reminder: ' + (err.response?.data?.error || err.message));
     }
   };
 
@@ -73,12 +74,18 @@ const RemindersPage = () => {
       <h1 style={styles.title}>Reminders</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <ReminderForm addReminder={handleAddReminder} />
-      <ReminderList
-        reminders={reminders}
-        deleteReminder={handleDeleteReminder}
-        updateReminder={handleUpdateReminder}
-        completeReminder={handleCompleteReminder}
-      />
+      {reminders.length === 0 ? (
+        <p style={{ textAlign: 'center', marginTop: '20px', color: '#666' }}>
+          No reminders available.
+        </p>
+      ) : (
+        <ReminderList
+          reminders={reminders}
+          deleteReminder={handleDeleteReminder}
+          updateReminder={handleUpdateReminder}
+          completeReminder={handleCompleteReminder}
+        />
+      )}
     </div>
   );
 };
