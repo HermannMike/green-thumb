@@ -49,7 +49,7 @@ export const updateReminder = async (id, updatedReminder) => {
       due_date: updatedReminder.due_date,
       plant_name: updatedReminder.plant_name,
     };
-    const response = await axios.put(API_BASE_URL + id, reminderData, { headers: getAuthHeaders() });
+    const response = await axios.put(`${API_BASE_URL}/${id}`, reminderData, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     handleAuthError(error);
@@ -58,7 +58,7 @@ export const updateReminder = async (id, updatedReminder) => {
 
 export const deleteReminder = async (id) => {
   try {
-    const response = await axios.delete(API_BASE_URL + id, { headers: getAuthHeaders() });
+    const response = await axios.delete(`${API_BASE_URL}/${id}`, { headers: getAuthHeaders() });
     return response.data;
   } catch (error) {
     handleAuthError(error);

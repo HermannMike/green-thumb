@@ -1,37 +1,34 @@
 from flask import Flask, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+
+from .routes.auth import auth_bp
+from .routes.reminders import reminders_bp
+from .routes.plants import plants_bp
 
 from . import db, migrate
 
-from flask_jwt_extended import JWTManager
-
-def create_app(config_object=None):
+def create_app():
     app = Flask(__name__)
     CORS(app)
 
-    if config_object:
-        app.config.from_object(config_object)
-    else:
-        app.config.from_object('backend.app.config.Config')
-
-    # Disable strict slashes to allow routes with or without trailing slash
-    app.url_map.strict_slashes = False
+    app.config.from_object('app.config.Config')
 
     db.init_app(app)
     migrate.init_app(app, db)
 
     jwt = JWTManager(app)
 
-    from .routes.reminders import reminders_bp
-    app.register_blueprint(reminders_bp, url_prefix='/api/reminders')
-
-    from .routes.auth import auth_bp
     app.register_blueprint(auth_bp, url_prefix='/api/auth')
+    app.register_blueprint(reminders_bp, url_prefix='/api/reminders')
+    app.register_blueprint(plants_bp, url_prefix='/api/plants')
 
     @app.route('/')
     def index():
-        return jsonify({"message": "Welcome to the API"})
+        return jsonify({"message": "Welcome to the simplified GreenThumb API"})
+
+    @app.route('/test', methods=['GET'])
+    def test():
+        return jsonify({"message": "Test route working"})
 
     return app
