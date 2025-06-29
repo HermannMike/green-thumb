@@ -1,16 +1,40 @@
-let plants = [];
+import api from './api';
 
-export const getPlants = () => Promise.resolve(plants);
-export const addPlant = (plant) => {
-  plant.id = Date.now();
-  plants.push(plant);
-  return Promise.resolve(plant);
+export const getPlants = async () => {
+  try {
+    const response = await api.get('/plants');
+    return response.data;
+  } catch (error) {
+    console.error('Get plants error:', error);
+    throw error;
+  }
 };
-export const updatePlant = (updated) => {
-  plants = plants.map((p) => (p.id === updated.id ? updated : p));
-  return Promise.resolve(updated);
+
+export const addPlant = async (plant) => {
+  try {
+    const response = await api.post('/plants', plant);
+    return response.data;
+  } catch (error) {
+    console.error('Add plant error:', error);
+    throw error;
+  }
 };
-export const deletePlant = (id) => {
-  plants = plants.filter((p) => p.id !== id);
-  return Promise.resolve();
+
+export const updatePlant = async (updated) => {
+  try {
+    const response = await api.put(`/plants/${updated.id}`, updated);
+    return response.data;
+  } catch (error) {
+    console.error('Update plant error:', error);
+    throw error;
+  }
+};
+
+export const deletePlant = async (id) => {
+  try {
+    await api.delete(`/plants/${id}`);
+  } catch (error) {
+    console.error('Delete plant error:', error);
+    throw error;
+  }
 };

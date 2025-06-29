@@ -1,12 +1,30 @@
-let reminders = [];
+import api from './api';
 
-export const getReminders = () => Promise.resolve(reminders);
-export const addReminder = (reminder) => {
-  reminder.id = Date.now();
-  reminders.push(reminder);
-  return Promise.resolve(reminder);
+export const getReminders = async () => {
+  try {
+    const response = await api.get('/reminders');
+    return response.data;
+  } catch (error) {
+    console.error('Get reminders error:', error);
+    throw error;
+  }
 };
-export const deleteReminder = (id) => {
-  reminders = reminders.filter((r) => r.id !== id);
-  return Promise.resolve();
+
+export const addReminder = async (reminder) => {
+  try {
+    const response = await api.post('/reminders', reminder);
+    return response.data;
+  } catch (error) {
+    console.error('Add reminder error:', error);
+    throw error;
+  }
+};
+
+export const deleteReminder = async (id) => {
+  try {
+    await api.delete(`/reminders/${id}`);
+  } catch (error) {
+    console.error('Delete reminder error:', error);
+    throw error;
+  }
 };
