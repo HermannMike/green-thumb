@@ -1,5 +1,5 @@
-from ..models.user import User
-from app.main import db
+from backend.app.models import User
+from backend.app.main import db
 from flask_jwt_extended import create_access_token
 
 def register(username, password):

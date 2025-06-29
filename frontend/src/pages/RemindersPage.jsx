@@ -53,8 +53,12 @@ const RemindersPage = () => {
 
   const handleCompleteReminder = async (id) => {
     try {
-      await deleteReminder(id);
-      setReminders((prevReminders) => prevReminders.filter((r) => r.id !== id));
+      // Implement completeReminder API call here
+      // For now, just update the reminder as completed locally
+      await updateReminder(id, { completed: true });
+      setReminders((prevReminders) =>
+        prevReminders.map((r) => (r.id === id ? { ...r, completed: true } : r))
+      );
     } catch (err) {
       setError('Failed to complete reminder');
     }

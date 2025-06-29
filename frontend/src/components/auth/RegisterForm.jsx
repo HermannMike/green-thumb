@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { signup } from '../services/auth';
+import { registerUser } from '../services/auth';
 
 const RegisterForm = () => {
   const [username, setUsername] = useState('');
@@ -8,8 +8,18 @@ const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await signup({ username, password });
-    setMessage(response.message);
+    try {
+      const response = await registerUser(username, password);
+      if (response.error) {
+        setMessage(`Error: ${response.error}`);
+      } else if (response.message) {
+        setMessage(response.message);
+      } else {
+        setMessage('Registration successful!');
+      }
+    } catch (error) {
+      setMessage(`Error: ${error.response?.data?.error || error.message}`);
+    }
   };
 
   return (

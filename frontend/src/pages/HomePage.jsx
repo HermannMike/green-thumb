@@ -30,7 +30,7 @@ const HomePage = () => {
       <h1 style={styles.title}>Welcome to GreenThumb</h1>
       <div style={styles.section}>
         <h2>Reminders</h2>
-        <ReminderList reminders={reminders} />
+        <ReminderList reminders={reminders} completeReminder={() => {}} />
       </div>
       <div style={styles.section}>
         <h2>Plants</h2>

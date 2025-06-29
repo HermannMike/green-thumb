@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
-import { login } from '../services/auth';
+import { loginUser } from '../services/auth';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await login({ username, password });
-    setMessage(response.message);
+    const response = await loginUser(username, password);
+    if (response.access_token) {
+      setMessage('Login successful');
+    } else {
+      setMessage(response.message || 'Login failed');
+    }
   };
 
   return (

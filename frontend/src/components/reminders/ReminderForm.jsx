@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
 const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => {
-  const [title, setTitle] = useState(initialData.title || '');
+  const [task, setTask] = useState(initialData.task || '');
   const [description, setDescription] = useState(initialData.description || '');
-  const [date, setDate] = useState(initialData.date || '');
+  const [due_date, setDueDate] = useState(initialData.due_date || '');
+  const [plant_id, setPlantId] = useState(initialData.plant_id || '');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -11,21 +12,26 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
     e.preventDefault();
     setError('');
     setSuccess('');
-    if (!title) {
-      setError('Title is required');
+    if (!task) {
+      setError('Task is required');
       return;
     }
-    if (!date) {
-      setError('Date is required');
+    if (!due_date) {
+      setError('Due date is required');
+      return;
+    }
+    if (!plant_id) {
+      setError('Plant ID is required');
       return;
     }
     if (onSubmit) {
-      onSubmit({ title, description, date });
+      onSubmit({ task, due_date, plant_id });
     } else {
-      addReminder({ title, description, date });
-      setTitle('');
+      addReminder({ task, due_date, plant_id });
+      setTask('');
       setDescription('');
-      setDate('');
+      setDueDate('');
+      setPlantId('');
       setSuccess('Reminder added successfully!');
     }
   };
@@ -37,9 +43,9 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
       {success && <div style={styles.success}>{success}</div>}
       <input
         type="text"
-        placeholder="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Task"
+        value={task}
+        onChange={(e) => setTask(e.target.value)}
         style={styles.input}
       />
       <textarea
@@ -49,9 +55,16 @@ const ReminderForm = ({ addReminder, initialData = {}, onSubmit, onCancel }) => 
         style={styles.textarea}
       />
       <input
-        type="date"
-        value={date}
-        onChange={(e) => setDate(e.target.value)}
+        type="datetime-local"
+        value={due_date}
+        onChange={(e) => setDueDate(e.target.value)}
+        style={styles.input}
+      />
+      <input
+        type="number"
+        placeholder="Plant ID"
+        value={plant_id}
+        onChange={(e) => setPlantId(e.target.value)}
         style={styles.input}
       />
       <div style={{ display: 'flex', justifyContent: 'space-between' }}>

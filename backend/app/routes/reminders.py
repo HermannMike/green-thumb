@@ -1,13 +1,12 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from app.main import db
-from ..models.reminder import Reminder
-from ..models.plant import Plant
+from backend.app import db
+from backend.app.models import Reminder, Plant
 from datetime import datetime
 
 reminders_bp = Blueprint('reminders', __name__)
 
-@reminders_bp.route('', methods=['GET'])
+@reminders_bp.route('/', methods=['GET'], strict_slashes=False)
 @jwt_required()
 def get_reminders():
     user_id = get_jwt_identity()
@@ -19,7 +18,7 @@ def get_reminders():
         'plant_id': r.plant_id
     } for r in reminders])
 
-@reminders_bp.route('', methods=['POST'])
+@reminders_bp.route('/', methods=['POST'], strict_slashes=False)
 @jwt_required()
 def add_reminder():
     data = request.get_json()
