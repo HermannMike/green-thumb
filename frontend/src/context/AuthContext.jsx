@@ -19,10 +19,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (formData) => {
     try {
       const data = await authService.login(formData);
-      setUser({ email: formData.email });
-      setToken(data.access_token);
-      localStorage.setItem("user", JSON.stringify({ email: formData.email }));
-      localStorage.setItem("token", data.access_token);
+      setUser({ username: formData.username });
+      setToken(data.token);
+      localStorage.setItem("user", JSON.stringify({ username: formData.username }));
+      localStorage.setItem("token", data.token);
       return data;
     } catch (error) {
       throw error;
@@ -32,10 +32,10 @@ export const AuthProvider = ({ children }) => {
   const register = async (formData) => {
     try {
       const data = await authService.register(formData);
-      setUser({ email: formData.email });
-      setToken(data.access_token);
-      localStorage.setItem("user", JSON.stringify({ email: formData.email }));
-      localStorage.setItem("token", data.access_token);
+      setUser({ username: formData.username });
+      setToken(data.token);
+      localStorage.setItem("user", JSON.stringify({ username: formData.username }));
+      localStorage.setItem("token", data.token);
       return data;
     } catch (error) {
       throw error;
@@ -55,4 +55,3 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
-
