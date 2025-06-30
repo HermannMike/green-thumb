@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/AuthForm.css";
 
 const LoginForm = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const { login } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -21,13 +21,13 @@ const LoginForm = () => {
     <div className="auth-form-container">
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <label>Email</label>
+        <label>Username</label>
         <input
-          type="email"
-          name="email"
-          placeholder="Enter your email"
+          type="text"
+          name="username"
+          placeholder="Enter your username"
           onChange={handleChange}
-          value={formData.email}
+          value={formData.username}
           required
         />
         <label>Password</label>
@@ -50,4 +50,3 @@ const LoginForm = () => {
 };
 
 export default LoginForm;
-
