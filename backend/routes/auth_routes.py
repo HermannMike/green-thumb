@@ -1,12 +1,8 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app
 from flask_jwt_extended import create_access_token
-import app
+from extensions import db, bcrypt, jwt
 from models.user import User
 from sqlalchemy.exc import IntegrityError
-
-db = app.db
-bcrypt = app.bcrypt
-jwt = app.jwt
 
 auth_bp = Blueprint('auth_bp', __name__)
 

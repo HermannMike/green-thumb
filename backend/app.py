@@ -27,17 +27,17 @@ def handle_exception(e):
 def index():
     return "Welcome to the Green Thumb API"
 
+import models.user
+import models.plant
+import models.reminder
+
+import routes.auth_routes as auth_routes
+import routes.plant_routes as plant_routes
+import routes.reminder_routes as reminder_routes
+
+app.register_blueprint(auth_routes.auth_bp)
+app.register_blueprint(plant_routes.plant_bp)
+app.register_blueprint(reminder_routes.reminder_bp)
+
 if __name__ == '__main__':
-    import models.user
-    import models.plant
-    import models.reminder
-
-    import routes.auth_routes as auth_routes
-    import routes.plant_routes as plant_routes
-    import routes.reminder_routes as reminder_routes
-
-    app.register_blueprint(auth_routes.auth_bp)
-    app.register_blueprint(plant_routes.plant_bp)
-    app.register_blueprint(reminder_routes.reminder_bp)
-
     app.run(debug=True, port=5000)
