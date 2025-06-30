@@ -1,0 +1,36 @@
+.plant-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .plant-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .plant-card h3 {
+    color: #166534;
+    margin-bottom: 0.5rem;
+  }
+  
+  .plant-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+  }
+  
+  .plant-actions button {
+    background-color: #22c55e;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .plant-actions button:hover {
+    background-color: #15803d;
+  }
+  

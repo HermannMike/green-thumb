@@ -1,0 +1,15 @@
+.reminder-calendar {
+    margin-top: 2rem;
+    padding: 1rem;
+    background: #f0fdf4;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    text-align: center;
+  }
+  
+  .has-reminder {
+    background-color: #bbf7d0 !important;
+    border-radius: 50%;
+    font-weight: bold;
+  }
+  

@@ -1,82 +1,66 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
+import "../../styles/PlantForm.css";
 
-const PlantForm = ({ addPlant }) => {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
+const PlantForm = ({ onSubmit, selectedPlant }) => {
+  const [form, setForm] = useState({ name: "", type: "", lastWatered: "" });
+
+  useEffect(() => {
+    if (selectedPlant) {
+      setForm(selectedPlant);
+    }
+  }, [selectedPlant]);
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name) return;
-    addPlant({ name, description, imageUrl });
-    setName('');
-    setDescription('');
-    setImageUrl('');
+    onSubmit(form);
+    setForm({ name: "", type: "", lastWatered: "" });
   };
 
   return (
-    <form onSubmit={handleSubmit} style={styles.form}>
-      <h2>Add Plant</h2>
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        style={styles.input}
-        required
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        style={styles.textarea}
-      />
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={imageUrl}
-        onChange={(e) => setImageUrl(e.target.value)}
-        style={styles.input}
-      />
-      <button type="submit" style={styles.button}>Add Plant</button>
+    <form className="plant-form" onSubmit={handleSubmit}>
+      <h3>{selectedPlant ? "Edit Plant" : "Add New Plant"}</h3>
+      <div className="form-group">
+        <label>Plant Name</label>
+        <input
+          type="text"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="e.g. Aloe Vera"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Type</label>
+        <input
+          type="text"
+          name="type"
+          value={form.type}
+          onChange={handleChange}
+          placeholder="e.g. Succulent"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label>Last Watered</label>
+        <input
+          type="date"
+          name="lastWatered"
+          value={form.lastWatered}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <button type="submit" className="btn">
+        {selectedPlant ? "Update Plant" : "Add Plant"}
+      </button>
     </form>
   );
 };
 
-const styles = {
-  form: {
-    marginBottom: '30px',
-    padding: '20px',
-    border: '1px solid #4caf50',
-    borderRadius: '8px',
-    backgroundColor: '#e8f5e9',
-  },
-  input: {
-    width: '100%',
-    padding: '8px 12px',
-    marginBottom: '12px',
-    borderRadius: '4px',
-    border: '1px solid #4caf50',
-    fontSize: '1rem',
-  },
-  textarea: {
-    width: '100%',
-    padding: '8px 12px',
-    marginBottom: '12px',
-    borderRadius: '4px',
-    border: '1px solid #4caf50',
-    fontSize: '1rem',
-    minHeight: '60px',
-  },
-  button: {
-    backgroundColor: '#4caf50',
-    color: '#fff',
-    padding: '10px 16px',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '1rem',
-    cursor: 'pointer',
-  },
-};
-
 export default PlantForm;
+

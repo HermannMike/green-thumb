@@ -1,60 +1,42 @@
-import React, { useState, useEffect } from 'react';
-import ReminderList from '../components/reminders/ReminderList';
-import PlantList from '../components/plants/PlantList';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/HomePage.css"; // Ensure you have the correct path to your CSS file
+
+
+const videoUrl = "/Homepage.mp4";
 
 const HomePage = () => {
-  const [reminders, setReminders] = useState(() => {
-    const saved = localStorage.getItem('reminders');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  const [plants, setPlants] = useState(() => {
-    const saved = localStorage.getItem('plants');
-    return saved ? JSON.parse(saved) : [];
-  });
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const updatedReminders = JSON.parse(localStorage.getItem('reminders')) || [];
-      const updatedPlants = JSON.parse(localStorage.getItem('plants')) || [];
-      setReminders(updatedReminders);
-      setPlants(updatedPlants);
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
-  }, []);
+  const navigate = useNavigate();
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Welcome to GreenThumb</h1>
-      <div style={styles.section}>
-        <h2>Reminders</h2>
-        <ReminderList reminders={reminders} />
-      </div>
-      <div style={styles.section}>
-        <h2>Plants</h2>
-        <PlantList plants={plants} />
+    <div className="homepage-container">
+      <video className="video-bg" autoPlay loop muted playsInline>
+        <source src={videoUrl} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="video-overlay" />
+      <div className="homepage-content">
+        <div className="welcome-card">
+          <h1>
+            Welcome to <span className="highlight">Green Thumb</span>
+          </h1>
+          <p>
+            Your personal plant management app. Track your plants, set reminders,
+            and grow your garden with ease.
+          </p>
+          <div className="cta-buttons">
+            <button className="btn" onClick={() => navigate("/login")}>
+              Login
+            </button>
+            <button className="btn" onClick={() => navigate("/register")}>
+              Register
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-const styles = {
-  container: {
-    maxWidth: '960px',
-    margin: '0 auto',
-    padding: '20px',
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-  },
-  title: {
-    textAlign: 'center',
-    color: '#2c3e50',
-    marginBottom: '30px',
-  },
-  section: {
-    marginBottom: '40px',
-  },
-};
-
 export default HomePage;
+

@@ -1,44 +1,44 @@
-import React from 'react';
-import ReminderItem from './ReminderItem';
+import { useState } from "react";
+import ReminderForm from "./ReminderForm";
+import ReminderItem from "./ReminderItem";
+import ReminderCalendar from "./ReminderCalendar";
+import "../../styles/ReminderList.css";
 
-const ReminderList = ({ reminders, deleteReminder }) => {
+const ReminderList = () => {
+  const [reminders, setReminders] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const addReminder = (reminder) => {
+    setReminders([...reminders, reminder]);
+  };
+
+  const deleteReminder = (id) => {
+    setReminders(reminders.filter((r) => r.id !== id));
+  };
+
   return (
-    <div>
-      <h2>Reminder List</h2>
-      {reminders.length === 0 ? (
-        <p>No reminders available.</p>
-      ) : (
-        reminders.map((reminder) => (
-          <div key={reminder.id} style={styles.reminderContainer}>
-            <ReminderItem reminder={reminder} />
-            <button
-              onClick={() => deleteReminder(reminder.id)}
-              style={styles.deleteButton}
-            >
-              Delete
-            </button>
-          </div>
-        ))
-      )}
+    <div className="reminder-list-wrapper">
+      <ReminderForm onAdd={addReminder} />
+      <ReminderCalendar reminders={reminders} onSelectDate={setSelectedDate} />
+      <div className="reminders-section">
+        <h3>My Reminders</h3>
+        {reminders.length === 0 ? (
+          <p className="no-reminders">You have no reminders yet.</p>
+        ) : (
+          <ul className="reminder-list">
+            {reminders.map((reminder) => (
+              <ReminderItem
+                key={reminder.id}
+                reminder={reminder}
+                onDelete={deleteReminder}
+              />
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 };
 
-const styles = {
-  reminderContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: '10px',
-  },
-  deleteButton: {
-    backgroundColor: '#d32f2f',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '4px',
-    padding: '6px 12px',
-    cursor: 'pointer',
-  },
-};
-
 export default ReminderList;
+
