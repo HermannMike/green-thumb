@@ -1,9 +1,7 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import app
+from extensions import db
 from models.plant import Plant
-
-db = app.db
 
 plant_bp = Blueprint('plant_bp', __name__)
 

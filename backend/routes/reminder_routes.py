@@ -1,9 +1,8 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import app
+from extensions import db
 from models.reminder import Reminder
 
-db = app.db
 reminder_bp = Blueprint('reminder_bp', __name__)
 
 @reminder_bp.route('/reminders', methods=['GET'])
