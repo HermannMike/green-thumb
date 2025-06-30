@@ -89,4 +89,3 @@ User login and registration is handled using a mock implementation via Context +
 
 🔧 Backend API & DB integration (e.g., Flask + PostgreSQL)
 
-🧑‍💻 Author
