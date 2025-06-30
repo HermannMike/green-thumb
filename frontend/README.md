@@ -32,6 +32,7 @@ what about this structure below do you suggest it :frontend/
 │   │   │   └── PlantForm.jsx
 │   │   ├── reminders/
 │   │   │   ├── ReminderList.jsx
+│   │   │   ├── ReminderCalendar.jsx
 │   │   │   ├── ReminderItem.jsx
 │   │   │   └── ReminderForm.jsx
 │   │   ├── layout/
