@@ -23,21 +23,16 @@ def register():
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
-    if not username or not password:
-        logging.warning("Username or password missing in request")
-        return jsonify({'message': 'Username and password required'}), 400
+    if not username or not password or not email:
+        logging.warning("Username, email or password missing in request")
+        return jsonify({'message': 'Username, email and password are required'}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
     try:
-        if email_column_exists() and email:
-            new_user = User(username=username, password=hashed_password, email=email)
-        else:
-            new_user = User(username=username, password=hashed_password)
+        new_user = User(username=username, password=hashed_password, email=email)
         db.session.add(new_user)
         db.session.commit()
-        response = {'id': new_user.id, 'username': new_user.username}
-        if email_column_exists():
-            response['email'] = getattr(new_user, 'email', None)
+        response = {'id': new_user.id, 'username': new_user.username, 'email': new_user.email}
         logging.info(f"User registered successfully: {response}")
         return jsonify(response), 201
     except IntegrityError as e:
