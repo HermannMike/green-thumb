@@ -6,7 +6,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
-app.config['CORS_ORIGINS'] = ['http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174']
+app.config['CORS_ORIGINS'] = [
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://frontend-5sqfnhsa8-sudi67s-projects.vercel.app'
+]
 
 db.init_app(app)
 bcrypt.init_app(app)
