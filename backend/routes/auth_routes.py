@@ -5,19 +5,6 @@ from models.user import User
 from sqlalchemy.exc import IntegrityError
 
 auth_bp = Blueprint('auth_bp', __name__)
-
-@auth_bp.route('/auth/check_username', methods=['GET'])
-def check_username():
-    username = request.args.get('username')
-    if not username:
-        return jsonify({'message': 'Username parameter is required'}), 400
-    # Query only username column to avoid email column error
-    user = User.query.with_entities(User.username).filter_by(username=username).first()
-    if user:
-        return jsonify({'available': False, 'message': 'Username is already taken'}), 200
-    else:
-        return jsonify({'available': True, 'message': 'Username is available'}), 200
-
 from sqlalchemy import inspect
 
 def email_column_exists():

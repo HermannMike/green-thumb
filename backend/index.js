@@ -34,23 +34,23 @@ const authenticateToken = (req, res, next) => {
 // Routes
 
 // New route: Check username availability
-app.get('/auth/check_username', async (req, res) => {
-  const username = req.query.username;
-  if (!username) {
-    return res.status(400).json({ message: 'Username parameter is required' });
-  }
-  try {
-    const result = await pool.query('SELECT username FROM users WHERE username = $1', [username]);
-    if (result.rows.length > 0) {
-      return res.status(200).json({ available: false, message: 'Username is already taken' });
-    } else {
-      return res.status(200).json({ available: true, message: 'Username is available' });
-    }
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Server error' });
-  }
-});
+// app.get('/auth/check_username', async (req, res) => {
+//   const username = req.query.username;
+//   if (!username) {
+//     return res.status(400).json({ message: 'Username parameter is required' });
+//   }
+//   try {
+//     const result = await pool.query('SELECT username FROM users WHERE username = $1', [username]);
+//     if (result.rows.length > 0) {
+//       return res.status(200).json({ available: false, message: 'Username is already taken' });
+//     } else {
+//       return res.status(200).json({ available: true, message: 'Username is available' });
+//     }
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: 'Server error' });
+//   }
+// });
 
 // Auth - Register
 app.post('/auth/register', async (req, res) => {
