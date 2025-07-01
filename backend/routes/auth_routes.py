@@ -14,16 +14,7 @@ def email_column_exists():
     columns = [col['name'] for col in inspector.get_columns('users')]
     return 'email' in columns
 
-from flask_cors import cross_origin
-
 @auth_bp.route('/auth/register', methods=['POST'])
-@cross_origin(origins=[
-    'https://green-thumb12.vercel.app',
-    'https://frontend-5sqfnhsa8-sudi67s-projects.vercel.app',
-    'https://green-thumb13.vercel.app',
-    'https://green-thumb13-o9h4d2xqy-sudi67s-projects.vercel.app',
-    'https://green-thumb13-by949yu4s-sudi67s-projects.vercel.app'
-], supports_credentials=True)
 def register():
     import logging
     logging.info("Received registration request")
