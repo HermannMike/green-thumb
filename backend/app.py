@@ -1,7 +1,7 @@
 from flask import Flask
 from extensions import db, bcrypt, jwt, cors
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='', static_folder='static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/green_thumb'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
@@ -15,7 +15,7 @@ cors.init_app(app, resources={r"/*": {"origins": app.config['CORS_ORIGINS']}})
 
 import logging
 import traceback
-from flask import jsonify
+from flask import jsonify, send_from_directory
 
 @app.errorhandler(Exception)
 def handle_exception(e):
@@ -26,6 +26,10 @@ def handle_exception(e):
 @app.route('/')
 def index():
     return "Welcome to the Green Thumb API"
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(app.static_folder, 'favicon.ico')
 
 import models.user
 import models.plant
