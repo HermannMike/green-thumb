@@ -31,20 +31,6 @@ def handle_exception(e):
     logging.error(traceback.format_exc())
     return jsonify({'message': 'Internal server error'}), 500
 
-@app.after_request
-def add_cors_headers(response):
-    origin = request.headers.get('Origin')
-    import logging
-    logging.info(f"Request Origin: {origin}")
-    logging.info(f"Response headers before adding CORS: {response.headers}")
-    if origin and origin in app.config['CORS_ORIGINS']:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
-    logging.info(f"Response headers after adding CORS: {response.headers}")
-    return response
-
 @app.route('/')
 def index():
     return "Welcome to the Green Thumb API"
