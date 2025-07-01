@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://green-thumb-9.onrender.com/', 
+  baseURL: 'https://green-thumb-1xau.onrender.com/', 
   headers: {
     'Content-Type': 'application/json',
   },
