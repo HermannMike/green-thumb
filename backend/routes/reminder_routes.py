@@ -14,7 +14,9 @@ def get_reminders():
     logging.debug(f"JWT identity: {user}")
     from flask import request
     logging.debug(f"Authorization header: {request.headers.get('Authorization')}")
+    logging.debug(f"Request args: {request.args}")
     if not user or 'id' not in user:
+        logging.error("Invalid or missing JWT identity")
         return jsonify({'message': 'Invalid or missing JWT identity'}), 401
     try:
         reminders = Reminder.query.filter_by(user_id=user['id']).all()
