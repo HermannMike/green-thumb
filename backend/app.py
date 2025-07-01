@@ -2,7 +2,9 @@ from flask import Flask
 from extensions import db, bcrypt, jwt, cors
 
 app = Flask(__name__, static_url_path='', static_folder='static')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/green_thumb'
+import os
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://postgres:password@localhost:5432/green_thumb')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
@@ -14,6 +16,10 @@ app.config['CORS_ORIGINS'] = [
 db.init_app(app)
 bcrypt.init_app(app)
 jwt.init_app(app)
+from flask_cors import CORS
+
+cors = CORS()
+
 cors.init_app(app, resources={r"/*": {"origins": app.config['CORS_ORIGINS']}})
 
 import logging
@@ -47,4 +53,4 @@ app.register_blueprint(plant_routes.plant_bp)
 app.register_blueprint(reminder_routes.reminder_bp)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5000, host='0.0.0.0')
