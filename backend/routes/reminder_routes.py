@@ -9,6 +9,7 @@ reminder_bp = Blueprint('reminder_bp', __name__)
 @jwt_required()
 def get_reminders():
     import logging
+    from datetime import datetime, date
     logging.basicConfig(level=logging.DEBUG)
     user = get_jwt_identity()
     logging.debug(f"JWT identity: {user}")
@@ -19,7 +20,11 @@ def get_reminders():
         logging.error("Invalid or missing JWT identity")
         return jsonify({'message': 'Invalid or missing JWT identity'}), 401
     try:
-        reminders = Reminder.query.filter_by(user_id=user['id']).all()
+        today = date.today()
+        reminders = Reminder.query.filter(
+            Reminder.user_id == user['id'],
+            Reminder.reminder_date >= today
+        ).all()
         result = []
         for reminder in reminders:
             try:
