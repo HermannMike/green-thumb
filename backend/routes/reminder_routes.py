@@ -31,7 +31,7 @@ def get_reminders():
                 'reminderDate': reminder_date,
                 'note': reminder.note
             })
-        return jsonify(result)
+        return jsonify(result), 200
     except Exception as e:
         logging.error(f"Error fetching reminders for user id {user['id']}: {e}")
         return jsonify({'message': 'Error fetching reminders'}), 500
