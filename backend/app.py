@@ -27,13 +27,23 @@ cors.init_app(app, resources={r"/*": {"origins": app.config['CORS_ORIGINS']}}, s
 
 import logging
 import traceback
-from flask import jsonify, send_from_directory
+from flask import jsonify, send_from_directory, request, make_response
 
 @app.errorhandler(Exception)
 def handle_exception(e):
     logging.error(f"Unhandled exception: {e}")
     logging.error(traceback.format_exc())
     return jsonify({'message': 'Internal server error'}), 500
+
+@app.after_request
+def add_cors_headers(response):
+    origin = request.headers.get('Origin')
+    if origin and origin in app.config['CORS_ORIGINS']:
+        response.headers.add('Access-Control-Allow-Origin', origin)
+        response.headers.add('Access-Control-Allow-Credentials', 'true')
+        response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+        response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
+    return response
 
 @app.route('/')
 def index():
