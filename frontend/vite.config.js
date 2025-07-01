@@ -19,9 +19,5 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    rollupOptions: {
-      external: ['axios'],
-    },
-  },
+  // Removed external axios to allow bundling
 });
