@@ -6,7 +6,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhos
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
-app.config['CORS_ORIGINS'] = '*'
+app.config['CORS_ORIGINS'] = ['https://green-thumb12.vercel.app']
 
 db.init_app(app)
 bcrypt.init_app(app)
