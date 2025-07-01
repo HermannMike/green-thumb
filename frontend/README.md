@@ -1,23 +1,14 @@
-# 🌿 Green Thumb
+# Frontend Setup and Run Instructions
 
-**Green Thumb** is a personal plant management web application that helps users track their plants, set watering and fertilizing reminders, and grow a healthy garden. Designed with a focus on simplicity, usability, and aesthetic appeal.
+## Prerequisites
 
-## 🚀 Features
+- Node.js (version 14 or higher recommended)
+- npm or yarn package manager
 
-- ✅ Clean and responsive UI
-- 🔐 Authentication (Login & Register)
-- 🏠 Homepage with video background
-- 🌱 Plant management (Add, Edit, Delete)
-- ⏰ Smart reminder system (date-based)
-- 📅 Calendar view of reminders
-- 🧠 Dashboard showing upcoming tasks
-- 🛡️ Protected routes for authenticated users
-- 💾 LocalStorage-based session persistence
+## Folder Structure
 
----
-
-## 📁 Folder Structure
-what about this structure below do you suggest it :frontend/
+```
+frontend/
 ├── public/
 │   ├── index.html
 │   └── favicon.ico
@@ -57,36 +48,42 @@ what about this structure below do you suggest it :frontend/
 │   └── App.css
 ├── package.json
 └── .env
+```
 
-. Install Dependencies
+## Setup
+
+1. Install dependencies:
+
+```bash
 npm install
+```
 
-. Run the Development Server
+or
+
+```bash
+yarn install
+```
+
+2. Start the development server:
+
+```bash
 npm run dev
+```
 
-🛠 Tech Stack
-Frontend: React, Vite
+or
 
-Routing: React Router DOM
+```bash
+yarn dev
+```
 
-Styling: Custom CSS
+3. The frontend development server will start, typically on `http://localhost:5173`.
 
-State Management: Context API
+## Proxy Configuration
 
-Animations: Framer Motion
+- API requests to `/auth` and `/reminders` are proxied to the backend server at `http://localhost:5000`.
+- This is configured in `vite.config.js`.
 
-Calendar: react-calendar
+## Notes
 
-🔐 Authentication
-User login and registration is handled using a mock implementation via Context + LocalStorage for persistence.
- Easily replaceable with a real API.
-
- 📌 Future Improvements
-⛅ Real-time notification system
-
-🪴 Plant image upload support
-
-📱 PWA support for mobile usage
-
-🔧 Backend API & DB integration (e.g., Flask + PostgreSQL)
-
+- Authentication is handled using React Context and localStorage for persistence.
+- Future improvements planned include real-time notifications, plant image upload support, PWA support, and backend API & DB integration.

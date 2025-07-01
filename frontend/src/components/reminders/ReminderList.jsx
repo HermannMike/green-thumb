@@ -1,24 +1,15 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import ReminderForm from "./ReminderForm";
 import ReminderItem from "./ReminderItem";
 import ReminderCalendar from "./ReminderCalendar";
 import "../../styles/ReminderList.css";
 
-const ReminderList = () => {
-  const [reminders, setReminders] = useState([]);
+const ReminderList = ({ reminders, onDelete }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const addReminder = (reminder) => {
-    setReminders([...reminders, reminder]);
-  };
-
-  const deleteReminder = (id) => {
-    setReminders(reminders.filter((r) => r.id !== id));
-  };
 
   return (
     <div className="reminder-list-wrapper">
-      <ReminderForm onAdd={addReminder} />
+      <ReminderForm />
       <ReminderCalendar reminders={reminders} onSelectDate={setSelectedDate} />
       <div className="reminders-section">
         <h3>My Reminders</h3>
@@ -30,7 +21,7 @@ const ReminderList = () => {
               <ReminderItem
                 key={reminder.id}
                 reminder={reminder}
-                onDelete={deleteReminder}
+                onDelete={onDelete}
               />
             ))}
           </ul>

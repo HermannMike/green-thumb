@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../../styles/AuthForm.css";
 
 const RegisterForm = () => {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({ username: "", email: "", password: "" });
   const navigate = useNavigate();
 
   const handleChange = (e) =>
@@ -16,7 +16,7 @@ const RegisterForm = () => {
       await registerAPI(form);
       navigate("/login");
     } catch (err) {
-      alert("Registration failed");
+      alert(err.response?.data?.message || "Registration failed");
     }
   };
 
@@ -24,12 +24,12 @@ const RegisterForm = () => {
     <div className="auth-form-container">
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <label>Name</label>
+        <label>Username</label>
         <input
-          name="name"
-          value={form.name}
+          name="username"
+          value={form.username}
           onChange={handleChange}
-          placeholder="Enter your name"
+          placeholder="Enter your username"
           required
         />
         <label>Email</label>
@@ -50,7 +50,9 @@ const RegisterForm = () => {
           placeholder="Enter a secure password"
           required
         />
-        <button type="submit">Join</button>
+        <button type="submit">
+          Join
+        </button>
       </form>
       <p>
         Already have an account?{" "}
@@ -61,4 +63,3 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
-

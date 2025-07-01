@@ -3,8 +3,8 @@ import "../../styles/UpcomingReminders.css";
 
 const UpcomingReminders = ({ reminders }) => {
   const upcoming = reminders
-    .filter((r) => new Date(r.date) >= new Date())
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .filter((r) => new Date(r.reminderDate) >= new Date())
+    .sort((a, b) => new Date(a.reminderDate) - new Date(b.reminderDate))
     .slice(0, 5); // Show top 5 upcoming
 
   return (
@@ -16,8 +16,8 @@ const UpcomingReminders = ({ reminders }) => {
         <ul>
           {upcoming.map((r) => (
             <li key={r.id}>
-              <span className="reminder-date">{new Date(r.date).toDateString()}</span>
-              <span className="reminder-text">{r.text}</span>
+              <span className="reminder-date">{new Date(r.reminderDate).toDateString()}</span>
+              <span className="reminder-text">{r.note}</span>
             </li>
           ))}
         </ul>

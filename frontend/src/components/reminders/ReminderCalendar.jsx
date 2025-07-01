@@ -7,7 +7,7 @@ const ReminderCalendar = ({ reminders, onSelectDate }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const getReminderDates = () =>
-    reminders.map((r) => new Date(r.date).toDateString());
+    reminders.map((r) => new Date(r.reminderDate).toDateString());
 
   const tileClassName = ({ date, view }) => {
     if (view === "month") {
@@ -34,4 +34,3 @@ const ReminderCalendar = ({ reminders, onSelectDate }) => {
 };
 
 export default ReminderCalendar;
-
