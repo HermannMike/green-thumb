@@ -12,7 +12,8 @@ app.config['CORS_ORIGINS'] = [
     'https://green-thumb12.vercel.app',
     'https://frontend-5sqfnhsa8-sudi67s-projects.vercel.app',
     'https://green-thumb13.vercel.app',
-    'https://green-thumb13-o9h4d2xqy-sudi67s-projects.vercel.app'
+    'https://green-thumb13-o9h4d2xqy-sudi67s-projects.vercel.app',
+    'https://green-thumb13-by949yu4s-sudi67s-projects.vercel.app'
 ]
 
 db.init_app(app)
