@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: 'https://green-thumb10.vercel.app',
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
