@@ -16,11 +16,15 @@ def email_column_exists():
 
 @auth_bp.route('/auth/register', methods=['POST'])
 def register():
+    import logging
+    logging.info("Received registration request")
     data = request.get_json()
+    logging.info(f"Request data: {data}")
     username = data.get('username')
     email = data.get('email')
     password = data.get('password')
     if not username or not password:
+        logging.warning("Username or password missing in request")
         return jsonify({'message': 'Username and password required'}), 400
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
@@ -34,9 +38,11 @@ def register():
         response = {'id': new_user.id, 'username': new_user.username}
         if email_column_exists():
             response['email'] = getattr(new_user, 'email', None)
+        logging.info(f"User registered successfully: {response}")
         return jsonify(response), 201
     except IntegrityError as e:
         db.session.rollback()
+        logging.error(f"IntegrityError during registration: {e}")
         if 'username' in str(e.orig):
             return jsonify({'message': 'Username already exists. Please choose a different username.'}), 409
         elif 'email' in str(e.orig):
@@ -46,6 +52,7 @@ def register():
     except Exception as e:
         import traceback
         traceback.print_exc()
+        logging.error(f"Exception during registration: {e}")
         return jsonify({'message': 'Server error', 'error': str(e)}), 500
 
 @auth_bp.route('/auth/login', methods=['POST'])
