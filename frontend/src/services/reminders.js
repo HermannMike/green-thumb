@@ -20,8 +20,9 @@ export const addReminder = async (reminder) => {
   try {
     // Map frontend form fields to backend expected fields
     const payload = {
-      note: reminder.text,
-      reminderDate: reminder.date,
+      note: reminder.note || reminder.text,
+      reminderDate: reminder.reminderDate || reminder.date,
+      plantId: reminder.plantId || reminder.plant_id || null,
       type: reminder.type, // optional, if backend supports
     };
     const token = localStorage.getItem('token');

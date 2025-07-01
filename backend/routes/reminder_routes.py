@@ -43,12 +43,18 @@ def add_reminder():
     data = request.get_json()
     # plant_id is now optional
     plant_id = data.get('plantId')
-    reminder_date = data.get('date') or data.get('reminderDate')
+    reminder_date_str = data.get('date') or data.get('reminderDate')
     note = data.get('text') or data.get('note')
     # type field is optional and ignored for now
 
-    if not reminder_date:
+    if not reminder_date_str:
         return jsonify({'message': 'reminderDate is required'}), 400
+
+    from datetime import datetime
+    try:
+        reminder_date = datetime.fromisoformat(reminder_date_str)
+    except ValueError:
+        return jsonify({'message': 'Invalid date format for reminderDate'}), 400
 
     reminder = Reminder(user_id=user['id'], plant_id=plant_id, reminder_date=reminder_date, note=note)
     db.session.add(reminder)
