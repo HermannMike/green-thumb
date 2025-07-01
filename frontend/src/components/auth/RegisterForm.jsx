@@ -1,56 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { register as registerAPI } from "../../services/auth";
-import api from "../../services/api";
 import { useNavigate } from "react-router-dom";
 import "../../styles/AuthForm.css";
 
 const RegisterForm = () => {
   const [form, setForm] = useState({ username: "", email: "", password: "" });
-  const [usernameAvailable, setUsernameAvailable] = useState(null);
-  const [checkingUsername, setCheckingUsername] = useState(false);
-  const [usernameError, setUsernameError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkAvailability = async () => {
-      if (form.username.trim() === "") {
-        setUsernameAvailable(null);
-        setUsernameError("");
-        return;
-      }
-      setCheckingUsername(true);
-      try {
-        console.log("Checking username availability for:", form.username);
-        const response = await api.get('/auth/check_username', { params: { username: form.username } });
-        console.log("Response from check_username:", response);
-        const data = response.data;
-        setUsernameAvailable(data.available);
-        setUsernameError(data.available ? "" : data.message);
-      } catch (error) {
-        console.error("Error in checkAvailability:", error);
-        setUsernameAvailable(null);
-        setUsernameError("Error checking username availability");
-      } finally {
-        setCheckingUsername(false);
-      }
-    };
-
-    const delayDebounceFn = setTimeout(() => {
-      checkAvailability();
-    }, 500);
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [form.username]);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (usernameAvailable === false) {
-      alert("Username is already taken. Please choose a different username.");
-      return;
-    }
     try {
       await registerAPI(form);
       navigate("/login");
@@ -71,8 +32,6 @@ const RegisterForm = () => {
           placeholder="Enter your username"
           required
         />
-        {checkingUsername && <p>Checking username availability...</p>}
-        {usernameError && <p style={{ color: "red" }}>{usernameError}</p>}
         <label>Email</label>
         <input
           type="email"
@@ -91,7 +50,7 @@ const RegisterForm = () => {
           placeholder="Enter a secure password"
           required
         />
-        <button type="submit" disabled={checkingUsername || usernameAvailable === false}>
+        <button type="submit">
           Join
         </button>
       </form>
