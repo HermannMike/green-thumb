@@ -9,7 +9,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
 app.config['CORS_ORIGINS'] = [
-    'https://green-thumb13.vercel.app'
+    'https://green-thumb13.vercel.app',
+    'https://green-thumb13-fps41zcah-sudi67s-projects.vercel.app'
 ]
 
 db.init_app(app)
