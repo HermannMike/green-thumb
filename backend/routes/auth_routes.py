@@ -9,6 +9,8 @@ from sqlalchemy import inspect
 
 def email_column_exists():
     inspector = inspect(db.engine)
+    if 'users' not in inspector.get_table_names():
+        return False
     columns = [col['name'] for col in inspector.get_columns('users')]
     return 'email' in columns
 
