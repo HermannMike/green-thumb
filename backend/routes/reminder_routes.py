@@ -1,24 +1,30 @@
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import app
+from extensions import db
 from models.reminder import Reminder
 
-db = app.db
 reminder_bp = Blueprint('reminder_bp', __name__)
 
 @reminder_bp.route('/reminders', methods=['GET'])
 @jwt_required()
 def get_reminders():
     import logging
+    from datetime import datetime, date
     logging.basicConfig(level=logging.DEBUG)
     user = get_jwt_identity()
     logging.debug(f"JWT identity: {user}")
     from flask import request
     logging.debug(f"Authorization header: {request.headers.get('Authorization')}")
+    logging.debug(f"Request args: {request.args}")
     if not user or 'id' not in user:
+        logging.error("Invalid or missing JWT identity")
         return jsonify({'message': 'Invalid or missing JWT identity'}), 401
     try:
-        reminders = Reminder.query.filter_by(user_id=user['id']).all()
+        today = date.today()
+        reminders = Reminder.query.filter(
+            Reminder.user_id == user['id'],
+            Reminder.reminder_date >= today
+        ).all()
         result = []
         for reminder in reminders:
             try:
@@ -32,7 +38,7 @@ def get_reminders():
                 'reminderDate': reminder_date,
                 'note': reminder.note
             })
-        return jsonify(result)
+        return jsonify(result), 200
     except Exception as e:
         logging.error(f"Error fetching reminders for user id {user['id']}: {e}")
         return jsonify({'message': 'Error fetching reminders'}), 500
@@ -44,12 +50,18 @@ def add_reminder():
     data = request.get_json()
     # plant_id is now optional
     plant_id = data.get('plantId')
-    reminder_date = data.get('date') or data.get('reminderDate')
+    reminder_date_str = data.get('date') or data.get('reminderDate')
     note = data.get('text') or data.get('note')
     # type field is optional and ignored for now
 
-    if not reminder_date:
+    if not reminder_date_str:
         return jsonify({'message': 'reminderDate is required'}), 400
+
+    from datetime import datetime
+    try:
+        reminder_date = datetime.fromisoformat(reminder_date_str)
+    except ValueError:
+        return jsonify({'message': 'Invalid date format for reminderDate'}), 400
 
     reminder = Reminder(user_id=user['id'], plant_id=plant_id, reminder_date=reminder_date, note=note)
     db.session.add(reminder)

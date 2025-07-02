@@ -19,4 +19,5 @@ export default defineConfig({
       },
     },
   },
+  // Removed external axios to allow bundling
 });

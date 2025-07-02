@@ -1,0 +1,7 @@
+File /home/sudeis/Documents/green-thumb/frontend/managed_context/metadata.json
+
+
+Warnings :
+1 : the definition is not identified
+
+Your trace has 0 errors and 1 warnings.

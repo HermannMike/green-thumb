@@ -2,10 +2,8 @@
   "name": "green-thumb-backend",
   "version": "1.0.0",
   "description": "Backend for Green Thumb app with PostgreSQL and JWT authentication",
-  "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "python3 app.py",
     "test": "jest --runInBand"
   },
   "dependencies": {
