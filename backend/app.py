@@ -10,7 +10,11 @@ app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
 app.config['CORS_ORIGINS'] = [
     'https://green-thumb13.vercel.app',
-    'https://green-thumb13-fps41zcah-sudi67s-projects.vercel.app'
+    'https://green-thumb13-fps41zcah-sudi67s-projects.vercel.app',
+    'https://green-thumb13-2v43t9nna-sudi67s-projects.vercel.app',
+    'https://green-thumb-1xau.onrender.com',
+    'http://localhost:3000',
+    'http://localhost:5173'
 ]
 
 db.init_app(app)
