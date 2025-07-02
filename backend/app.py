@@ -4,7 +4,7 @@ from extensions import db, bcrypt, jwt, cors
 app = Flask(__name__, static_url_path='', static_folder='static')
 import os
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:password@localhost:5432/green_thumb?port=5432'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'postgresql://green_thumb_user:StHbRSOhRLCjYqoo5z94vaB1bBjb6tQI@dpg-d1ikcoer433s73aq1a2g-a/green_thumb')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'your_jwt_secret'
 
